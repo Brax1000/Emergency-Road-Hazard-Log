@@ -27,27 +27,54 @@ void addHazard(void)
     /* Field order: location|hazardType|description|reportedBy|dateReported|status|dateCleared */
 }
 
-/* Member 2: display every saved report */
-void viewHazards(void)
-{
+void viewHazards(void){
     char line[LINE_SIZE];
     FILE *fp;
 
-    /* TODO: Open hazards.txt in read mode. */
-    /* TODO: Read and display each record with fgets(). */
-    /* TODO: Close the file and handle a missing file. */
+    fp = fopen("hazard.txt", "r");
+    if(fp==NULL){
+        printf("No hazard reports found.\n");
+        return 1;
+    }
+
+    printf("\n===== ALL HAZARD REPORTS =====\n");
+
+    while(fgets(line, sizeof(line), fp) !=NULL){
+        printf("%s", line);
+    }
+    fclose(fp);
 }
 
-/* Member 2: find reports containing the search text */
-void searchHazards(void)
-{
+void searchHazards(void) {
     char searchText[LOCATION_SIZE];
     char line[LINE_SIZE];
     FILE *fp;
 
-    /* TODO: Ask the user for a location, hazard type, or keyword. */
-    /* TODO: Read the file line by line and check with strstr(). */
-    /* TODO: Display each matching record. */
+    int found=0;
+
+    printf("Enter a Location or Hazard to search: ");
+    fgets(searchText, sizeof(searchText), stdin);
+    searchText[strcspn(searchText, "\n")]='\0';
+
+    fp= fopen("hazard.txt", "r");
+    if(fp==NULL){
+        printf("No hazard reports found.\n");
+        return 1;
+    }
+
+    printf("\n===== SEARCH RESULTS =====\n");
+
+    while(fgets(line, sizeof(line), fp) !=NULL){
+        if(strstr(line, searchText) !=NULL){
+            printf("%s", line);
+            found=1;
+        }
+    }
+
+    if(found==0){
+        printf("No matching hazard report found.\n");
+    }
+    fclose(fp);
 }
 
 /* Member 3: change a report's status to Cleared */
