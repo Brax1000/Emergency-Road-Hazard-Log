@@ -147,7 +147,7 @@ void searchHazards(void) {
     fclose(fp);
 }
 
-/* Member 3: change a report's status to Cleared */
+// BRAXTENN 
 void updateHazardStatus(void)
 {
     char searchLocation[LOCATION_SIZE];
@@ -317,7 +317,7 @@ void updateHazardStatus(void)
 
 int main(void)
 {
-    /* Add the menu here when the team combines the functions. */
+    // Add the menu here when the team combines the functions
     int choice;
     char choiceText[10];
 
