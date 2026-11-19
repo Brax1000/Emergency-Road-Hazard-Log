@@ -101,10 +101,10 @@ void viewHazards(void){
     char line[LINE_SIZE];
     FILE *fp;
 
-    fp = fopen(HAZARD_FILE, "r");
+    fp = fopen("hazard.txt", "r");
     if(fp==NULL){
         printf("No hazard reports found.\n");
-        return;
+        return 1;
     }
 
     printf("\n===== ALL HAZARD REPORTS =====\n");
@@ -126,10 +126,10 @@ void searchHazards(void) {
     fgets(searchText, sizeof(searchText), stdin);
     searchText[strcspn(searchText, "\n")]='\0';
 
-    fp= fopen(HAZARD_FILE, "r");
+    fp= fopen("hazard.txt", "r");
     if(fp==NULL){
         printf("No hazard reports found.\n");
-        return;
+        return 1;
     }
 
     printf("\n===== SEARCH RESULTS =====\n");
