@@ -166,6 +166,8 @@ void updateHazardStatus(void)
     FILE *temp;
 
     int found = 0;
+    int validDate;
+    int i;
 
     /* TODO: Find the report by location. */
     /* TODO: Write all records to a temporary file, updating the matching record. */
@@ -177,6 +179,12 @@ void updateHazardStatus(void)
     printf("Enter location of the hazard to update: ");
     fgets(searchLocation, sizeof(searchLocation), stdin);
     searchLocation[strcspn(searchLocation, "\n")] = '\0';
+
+    if (strchr(searchLocation, '|') != NULL)
+    {
+        printf("Location cannot contain the | character.\n");
+        return;
+    }
 
     fp = fopen(HAZARD_FILE, "r");
 
@@ -225,9 +233,48 @@ void updateHazardStatus(void)
             }
             else
             {
-                printf("\nEnter date cleared (YYYY-MM-DD): ");
-                fgets(dateCleared, sizeof(dateCleared), stdin);
-                dateCleared[strcspn(dateCleared, "\n")] = '\0';
+                do
+                {
+                    validDate = 1;
+                    printf("\nEnter date cleared (YYYY-MM-DD): ");
+
+                    if (fgets(dateCleared, sizeof(dateCleared), stdin) == NULL)
+                    {
+                        fclose(fp);
+                        fclose(temp);
+                        remove("temp.txt");
+                        return;
+                    }
+
+                    dateCleared[strcspn(dateCleared, "\n")] = '\0';
+
+                    if (strlen(dateCleared) != 10)
+                    {
+                        validDate = 0;
+                    }
+                    else
+                    {
+                        for (i = 0; i < 10; i++)
+                        {
+                            if (i == 4 || i == 7)
+                            {
+                                if (dateCleared[i] != '-')
+                                {
+                                    validDate = 0;
+                                }
+                            }
+                            else if (dateCleared[i] < '0' || dateCleared[i] > '9')
+                            {
+                                validDate = 0;
+                            }
+                        }
+                    }
+
+                    if (validDate == 0)
+                    {
+                        printf("Invalid date format. Use YYYY-MM-DD.\n");
+                    }
+                } while (validDate == 0);
 
                 strcpy(status, "Cleared");
 
