@@ -104,7 +104,7 @@ void viewHazards(void){
     fp = fopen("hazard.txt", "r");
     if(fp==NULL){
         printf("No hazard reports found.\n");
-        return 1;
+        return;
     }
 
     printf("\n===== ALL HAZARD REPORTS =====\n");
@@ -129,7 +129,7 @@ void searchHazards(void) {
     fp= fopen("hazard.txt", "r");
     if(fp==NULL){
         printf("No hazard reports found.\n");
-        return 1;
+        return;
     }
 
     printf("\n===== SEARCH RESULTS =====\n");
